@@ -42,7 +42,7 @@ func TestGoroutineWakeUp() {
 	for _, t := range allStats {
 		sum += t.Microseconds()
 	}
-	fmt.Println("test times:", len(allStats))
+	// fmt.Println("test times:", len(allStats))
 	avg := float64(sum) / float64(len(allStats))
 	fmt.Println("avg:", avg, "median:", allStats[49], "p80:", allStats[79], "p99:", allStats[98])
 }
