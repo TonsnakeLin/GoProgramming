@@ -1,8 +1,7 @@
 package main
-import (
-	"fmt"
-)
-func main() {
-  fmt.Println("hello")
-}
 
+import "github.com/TonsnakeLin/GoProgramming/goroutines"
+
+func main() {
+	goroutines.TestGoroutineWakeUp()
+}
