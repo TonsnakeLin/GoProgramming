@@ -44,7 +44,7 @@ func TestGoroutineWakeUp() {
 	}
 	// fmt.Println("test times:", len(allStats))
 	avg := float64(sum) / float64(len(allStats))
-	fmt.Println("avg:", avg, "median:", allStats[49], "p80:", allStats[79], "p99:", allStats[98])
+	fmt.Println("avg:", avg, "median:", allStats[49], "p99:", allStats[98], "pmax:", allStats[99])
 }
 
 func Test10times() {
