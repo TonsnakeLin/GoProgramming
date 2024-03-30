@@ -52,3 +52,46 @@ func Test10times() {
 		TestGoroutineWakeUp()
 	}
 }
+
+type lookupTableTask struct {
+	cursor int
+}
+
+type IndexLookUpExecutor struct {
+	resultCh chan *lookupTableTask
+}
+
+func sendOneTaskTo2Chan(workCh, resultCh chan *lookupTableTask, wg *sync.WaitGroup) {
+	task := &lookupTableTask{
+		cursor: 10,
+	}
+	select {
+	case workCh <- task:
+		resultCh <- task
+	default:
+		fmt.Println("default")
+	}
+	wg.Done()
+}
+
+func receiveTask(workCh chan *lookupTableTask, wg *sync.WaitGroup) {
+	t := <-workCh
+	fmt.Println("receive workCh success", t.cursor)
+	wg.Done()
+}
+
+func TestSendChan() {
+	e := &IndexLookUpExecutor{}
+	workCh := make(chan *lookupTableTask, 1)
+	e.resultCh = make(chan *lookupTableTask, 10)
+	var wg sync.WaitGroup
+	wg.Add(2)
+	go receiveTask(workCh, &wg)
+	go sendOneTaskTo2Chan(workCh, e.resultCh, &wg)
+	task, ok := <-e.resultCh
+	if !ok {
+		fmt.Println("receive resultCh failed")
+	}
+	fmt.Println("receive resultCh success", task.cursor)
+	wg.Wait()
+}
